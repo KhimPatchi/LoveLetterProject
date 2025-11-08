@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
+      "src": "love_letter.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/love_letter.html"
     }
   ]
 }
