@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Love Story Anniversary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffd6e7 0%, #ffc2d6 100%);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    .title-font {
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .heart {
+      color: #ff4d6d;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: absolute;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      z-index: 10;
+    }
+    
+    .heart:hover { 
+      transform: scale(1.3); 
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+    
+    .hidden { 
+      display: none; 
+    }
+    
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+    }
+    
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .floating-heart {
+      position: absolute;
+      color: rgba(255, 77, 109, 0.3);
+      font-size: 1.5rem;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .task-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+      border: 2px solid #ff85a2;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      padding: 20px;
+    }
+    
+    .progress-container {
+      width: 100%;
+      max-width: 500px;
+      height: 10px;
+      background: #ffd6e7;
+      border-radius: 5px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #ff4d6d, #ff85a2);
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    
+    .romantic-btn {
+      background: linear-gradient(to right, #ff4d6d, #ff85a2);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+      font-weight: 600;
+    }
+    
+    .romantic-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+    }
+    
+    .romantic-input {
+      padding: 12px 20px;
+      border: 2px solid #ff85a2;
+      border-radius: 50px;
+      font-size: 16px;
+      width: 200px;
+      text-align: center;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .romantic-input:focus {
+      outline: none;
+      border-color: #ff4d6d;
+      box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
+    }
+    
+    .option-btn {
+      background: white;
+      color: #ff4d6d;
+      border: 2px solid #ffb3c6;
+      padding: 15px 25px;
+      border-radius: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 10px;
+      width: 200px;
+      text-align: center;
+    }
+    
+    .option-btn:hover {
+      background: #ff4d6d;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+    }
+    
+    .option-btn.correct {
+      background: #4ade80;
+      color: white;
+      border-color: #4ade80;
+    }
+    
+    .option-btn.wrong {
+      background: #f87171;
+      color: white;
+      border-color: #f87171;
+    }
+    
+    @keyframes celebrate {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    .celebrate {
+      animation: celebrate 0.5s ease-in-out 3;
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.8;
+      border-radius: 50%;
+    }
+    
+    .anniversary-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      min-height: auto;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,240,245,0.95) 100%);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      padding: 30px;
+      text-align: center;
+      overflow: hidden;
+      border: 2px solid #ff85a2;
+      margin: 20px;
+    }
+    
+    .anniversary-title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #ff4d6d;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      font-family: 'Dancing Script', cursive;
+      line-height: 1.2;
+    }
+    
+    .anniversary-subtitle {
+      font-size: 1.5rem;
+      color: #ff85a2;
+      margin-bottom: 20px;
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .love-message {
+      font-size: 1.2rem;
+      color: #ff4d6d;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      font-family: 'Dancing Script', cursive;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .photo-frame {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid #ff4d6d;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      position: relative;
+      background: linear-gradient(135deg, #ffd6e7 0%, #ffc2d6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #ff4d6d;
+    }
+    
+    .memories-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 10px;
+    }
+    
+    .memory-card {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #ff4d6d;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .memory-card:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .countdown-item {
+      background: #ff4d6d;
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .countdown-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .countdown-label {
+      font-size: 0.7rem;
+    }
+    
+    .anniversary-footer {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #ff85a2;
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .floating-hearts-anniversary {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .floating-heart-anniversary {
+      position: absolute;
+      color: rgba(255, 77, 109, 0.4);
+      font-size: 1.2rem;
+      animation: float-anniversary 20s infinite linear;
+    }
+    
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50px;
+      padding: 10px 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+    }
+    
+    .music-btn {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .music-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .love-message::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .love-message::-webkit-scrollbar-track {
+      background: rgba(255, 77, 109, 0.1);
+      border-radius: 10px;
+    }
+    
+    .love-message::-webkit-scrollbar-thumb {
+      background: #ff4d6d;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen overflow-hidden">
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <div id="passwordPage" class="page text-center fade-in">
+    <div class="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full">
+      <h1 class="text-5xl font-bold text-pink-600 mb-6 title-font">Happy Anniversary ❤️</h1>
+      <p class="mb-6 text-pink-700 text-lg">Enter our special date to begin your quest:</p>
+      <input id="passwordInput" type="password" placeholder="MMDDYYYY" class="romantic-input mb-4">
+      <br>
+      <button onclick="checkPassword()" class="romantic-btn">Enter</button>
+      <p id="passwordMsg" class="text-red-500 mt-4 font-medium"></p>
+    </div>
+  </div>
+
+  <div id="task1Page" class="page hidden">
+    <div class="text-center mb-6">
+      <h2 class="text-3xl font-bold text-pink-600 mb-2 title-font">Task 1: Catch all the hearts! ❤️</h2>
+      <p class="mb-2 text-pink-700 text-lg">Click each moving heart to form the heart of our love 💖</p>
+      <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+      <p id="task1Msg" class="text-green-600 mt-2 font-bold text-lg"></p>
+    </div>
+    <div class="task-container"></div>
+  </div>
+
+  <div id="task2Page" class="page hidden">
+    <div class="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
+      <h2 class="text-3xl font-bold text-pink-600 mb-4 title-font">Task 2: Memory Check 💌</h2>
+      <p class="mb-6 text-pink-700 text-lg">Where did we first meet?</p>
+      <div class="flex flex-col items-center">
+        <button onclick="checkAnswer('wrong1')" class="option-btn">At the park</button>
+        <button onclick="checkAnswer('correct')" class="option-btn">At school</button>
+        <button onclick="checkAnswer('wrong2')" class="option-btn">Online</button>
+      </div>
+      <p id="task2Msg" class="text-green-600 mt-6 font-bold text-lg"></p>
+    </div>
+  </div>
+
+  <div id="anniversaryPage" class="page hidden">
+    <div class="anniversary-container fade-in">
+      <div class="floating-hearts-anniversary" id="floatingHeartsAnniversary"></div>
+      
+      <h1 class="anniversary-title">Happy Anniversary</h1>
+      <p class="anniversary-subtitle">Celebrating our love story 💖</p>
+      
+      <div class="photo-frame">❤️</div>
+      
+      <div class="love-message">
+        My Dearest Love,
+
+        Happy Anniversary! Every day with you feels like a beautiful dream. 
+        You are my sunshine on cloudy days and my comfort in difficult times.
+        
+        I cherish every moment we've shared and look forward to creating 
+        many more beautiful memories together.
+        
+        Forever yours,
+        [Your Name]
+      </div>
+      
+      <div class="memories-container">
+        <div class="memory-card">🌹</div>
+        <div class="memory-card">💑</div>
+        <div class="memory-card">🎉</div>
+        <div class="memory-card">🌅</div>
+      </div>
+      
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <div class="countdown-value" id="years">1</div>
+          <div class="countdown-label">Years</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="months">0</div>
+          <div class="countdown-label">Months</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="days">0</div>
+          <div class="countdown-label">Days</div>
+        </div>
+      </div>
+      
+      <p class="anniversary-footer">Here's to many more years of love and happiness together! 💕</p>
+      
+      <!-- Music play button as backup -->
+      <button onclick="startMusic()" class="romantic-btn mt-4">🎵 Play Our Song 🎵</button>
+    </div>
+    
+    <audio id="bgMusic" loop preload="auto">
+      <source src="blue-yungkai.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    
+    <div class="music-player" id="musicPlayer">
+      <span class="text-pink-700 font-medium">Our Song</span>
+      <button class="music-btn" id="playBtn">▶</button>
+      <button class="music-btn" id="pauseBtn">⏸</button>
+      <button class="music-btn" id="volumeUpBtn">🔊</button>
+      <button class="music-btn" id="volumeDownBtn">🔉</button>
+    </div>
+  </div>
+
+  <script>
+    function createFloatingHearts() {
+      const container = document.getElementById('floatingHearts');
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.classList.add('floating-heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 15 + 's';
+        heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+        container.appendChild(heart);
+      }
+    }
+    
+    function createAnniversaryHearts() {
+      const container = document.getElementById('floatingHeartsAnniversary');
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.classList.add('floating-heart-anniversary');
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 20 + 's';
+        heart.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+        container.appendChild(heart);
+      }
+    }
+    
+    function startMusic() {
+      const music = document.getElementById('bgMusic');
+      music.volume = 0.7;
+      music.play().catch(error => {
+        console.log("Auto-play blocked:", error);
+      });
+    }
+    
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value.trim().toUpperCase();
+      if(input === '12102020' || input === 'DECEMBER10') {
+        document.getElementById('passwordPage').classList.add('hidden');
+        document.getElementById('task1Page').classList.remove('hidden');
+        startMovingHearts();
+      } else {
+        document.getElementById('passwordMsg').innerText = 'Oops! Try again ❤️';
+      }
+    }
+    
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function startMovingHearts() {
+      const taskContainer = document.querySelector('#task1Page .task-container');
+      const task1Msg = document.getElementById('task1Msg');
+      const progressBar = document.getElementById('progressBar');
+      const heartsCount = 8;
+      let heartsClicked = 0;
+      const hearts = [];
+
+      taskContainer.innerHTML = '';
+
+      for(let i = 0; i < heartsCount; i++) {
+        const heart = document.createElement('span');
+        heart.innerText = '❤️';
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * (taskContainer.clientWidth - 40) + 'px';
+        heart.style.top = Math.random() * (taskContainer.clientHeight - 40) + 'px';
+        taskContainer.appendChild(heart);
+
+        const dx = (Math.random() * 0.5 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
+        const dy = (Math.random() * 0.5 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
+        hearts.push({el: heart, x: dx, y: dy});
+
+        heart.addEventListener('click', () => {
+          if (heart.style.opacity !== '0.3') {
+            heart.style.transform = 'scale(0.5)';
+            heart.style.opacity = '0.3';
+            heartsClicked++;
+            progressBar.style.width = (heartsClicked / heartsCount) * 100 + '%';
+            
+            if(heartsClicked === heartsCount) {
+              task1Msg.innerText = 'All hearts caught! You unlocked the next task! 🌸';
+              task1Msg.classList.add('celebrate');
+              setTimeout(() => {
+                document.getElementById('task1Page').classList.add('hidden');
+                document.getElementById('task2Page').classList.remove('hidden');
+              }, 2000);
+            }
+          }
+        });
+      }
+
+      function moveHearts() {
+        hearts.forEach(h => {
+          const rect = taskContainer.getBoundingClientRect();
+          let left = h.el.offsetLeft + h.x;
+          let top = h.el.offsetTop + h.y;
+          if(left < 0 || left > rect.width - 40) h.x *= -1;
+          if(top < 40 || top > rect.height - 40) h.y *= -1;
+          h.el.style.left = h.el.offsetLeft + h.x + 'px';
+          h.el.style.top = h.el.offsetTop + h.y + 'px';
+        });
+        requestAnimationFrame(moveHearts);
+      }
+      moveHearts();
+    }
+
+    function checkAnswer(ans) {
+      const msg = document.getElementById('task2Msg');
+      const buttons = document.querySelectorAll('.option-btn');
+      
+      buttons.forEach(btn => btn.style.pointerEvents = 'none');
+      
+      if(ans === 'correct') {
+        msg.innerText = 'Correct! You are amazing 💖';
+        document.querySelector(`button[onclick="checkAnswer('${ans}')"]`).classList.add('correct');
+        msg.classList.add('celebrate');
+        
+        setTimeout(() => {
+          document.getElementById('task2Page').classList.add('hidden');
+          document.getElementById('anniversaryPage').classList.remove('hidden');
+          setupAnniversaryPage();
+          startConfetti();
+        }, 2000);
+      } else {
+        msg.innerText = 'Try again! 😘';
+        document.querySelector(`button[onclick="checkAnswer('${ans}')"]`).classList.add('wrong');
+        
+        setTimeout(() => {
+          buttons.forEach(btn => {
+            btn.style.pointerEvents = 'auto';
+            btn.classList.remove('wrong');
+          });
+          msg.innerText = '';
+        }, 1500);
+      }
+    }
+
+    function setupAnniversaryPage() {
+      const music = document.getElementById('bgMusic');
+      const playBtn = document.getElementById('playBtn');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const volumeUpBtn = document.getElementById('volumeUpBtn');
+      const volumeDownBtn = document.getElementById('volumeDownBtn');
+      
+      createAnniversaryHearts();
+      updateAnniversaryTime();
+      setInterval(updateAnniversaryTime, 1000);
+      
+      music.volume = 0.7;
+      startMusic();
+      
+      playBtn.addEventListener('click', () => music.play());
+      pauseBtn.addEventListener('click', () => music.pause());
+      volumeUpBtn.addEventListener('click', () => {
+        if (music.volume < 1) music.volume += 0.1;
+      });
+      volumeDownBtn.addEventListener('click', () => {
+        if (music.volume > 0) music.volume -= 0.1;
+      });
+    }
+    
+    function updateAnniversaryTime() {
+      const anniversaryDate = new Date(2020, 11, 10);
+      const now = new Date();
+      
+      let years = now.getFullYear() - anniversaryDate.getFullYear();
+      let months = now.getMonth() - anniversaryDate.getMonth();
+      let days = now.getDate() - anniversaryDate.getDate();
+      
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+      
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+      
+      document.getElementById('years').textContent = years;
+      document.getElementById('months').textContent = months;
+      document.getElementById('days').textContent = days;
+    }
+
+    function startConfetti() {
+      const colors = ['#ff4d6d','#ff85a2','#ffb3c6','#ff1a75','#ff66a3'];
+      for(let i=0;i<150;i++){
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.left = Math.random()*window.innerWidth+'px';
+        confetti.style.top = Math.random()*-500+'px';
+        document.body.appendChild(confetti);
+        let fall = 0;
+        const speed = Math.random()*1.5 + 1.5;
+        const confettiInterval = setInterval(()=>{
+          fall += speed;
+          confetti.style.top = fall+'px';
+          if(fall>window.innerHeight){ 
+            confetti.remove(); 
+            clearInterval(confettiInterval);
+          }
+        },20);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      createFloatingHearts();
+      setTimeout(() => startMusic(), 1000);
+      document.body.addEventListener('click', () => startMusic(), { once: true });
+    });
+  </script>
+</body>
+</html>
