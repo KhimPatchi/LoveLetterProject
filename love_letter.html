@@ -1,6 +1,6 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Love Story Anniversary</title>
@@ -491,8 +491,8 @@
         border-radius: 10px;
       }
     </style>
-  </head>
-  <body class="flex items-center justify-center min-h-screen overflow-hidden">
+</head>
+<body class="flex items-center justify-center min-h-screen overflow-hidden">
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
       <div class="loading-heart">❤️</div>
@@ -595,9 +595,13 @@
         <button onclick="startMusic()" class="romantic-btn mt-4">🎵 Play Our Song 🎵</button>
       </div>
       
+      <!-- FIXED AUDIO ELEMENT FOR VERCEL -->
       <audio id="bgMusic" loop preload="auto">
-        <source src="./blue-yungkai.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
+      <source src="./blue-yungkai.mp3" type="audio/mpeg">
+      <source src="/blue-yungkai.mp3" type="audio/mpeg">
+      <!-- Backup online music -->
+      <source src="https://assets.mixkit.co/music/preview/mixkit-sweet-romance-155.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
       </audio>
       
       <div class="music-player" id="musicPlayer">
@@ -855,5 +859,5 @@
         simulateLoading();
       });
     </script>
-  </body>
-  </html>
+</body>
+</html>
