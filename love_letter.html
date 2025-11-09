@@ -595,13 +595,11 @@
         <button onclick="startMusic()" class="romantic-btn mt-4">🎵 Play Our Song 🎵</button>
       </div>
       
-      <!-- FIXED AUDIO ELEMENT FOR VERCEL -->
-      <audio id="bgMusic" loop preload="auto">
-      <source src="./blue-yungkai.mp3" type="audio/mpeg">
-      <source src="/blue-yungkai.mp3" type="audio/mpeg">
-      <!-- Backup online music -->
-      <source src="https://assets.mixkit.co/music/preview/mixkit-sweet-romance-155.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
+      <!-- FIXED AUDIO ELEMENT - CORS friendly sources -->
+      <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/11/16/audio_c3e1be2295.mp3?filename=romantic-piano-soft-music-144529.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2023/04/06/audio_1a0a0f0a1a.mp3?filename=romantic-background-music-150919.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
       </audio>
       
       <div class="music-player" id="musicPlayer">
@@ -665,12 +663,25 @@
         }
       }
       
+      // FIXED: Enhanced music function
       function startMusic() {
         const music = document.getElementById('bgMusic');
+        console.log("🎵 Starting music...");
+        
+        // Reset and set volume
+        music.currentTime = 0;
         music.volume = 0.7;
-        music.play().catch(error => {
-          console.log("Auto-play blocked:", error);
-        });
+        
+        const playPromise = music.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            console.log("✅ Music playing successfully!");
+          }).catch(error => {
+            console.log("❌ Auto-play blocked:", error);
+            alert("🎵 Click the 'Play Our Song' button again to start music! Browsers require user interaction.");
+          });
+        }
       }
       
       function checkPassword() {
