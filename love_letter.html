@@ -595,10 +595,10 @@
         <button onclick="startMusic()" class="romantic-btn mt-4">🎵 Play Our Song 🎵</button>
       </div>
       
-      <!-- FIXED AUDIO ELEMENT - CORS friendly sources -->
+      <!-- FIXED AUDIO ELEMENT - RELIABLE ONLINE SOURCES -->
       <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/11/16/audio_c3e1be2295.mp3?filename=romantic-piano-soft-music-144529.mp3" type="audio/mpeg">
-        <source src="https://cdn.pixabay.com/download/audio/2023/04/06/audio_1a0a0f0a1a.mp3?filename=romantic-background-music-150919.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d0d13b2c14.mp3?filename=romantic-piano-115571.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2021/10/25/audio_3bdd13c825.mp3?filename=romantic-background-music-115775.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
       
@@ -670,16 +670,22 @@
         
         // Reset and set volume
         music.currentTime = 0;
-        music.volume = 0.7;
+        music.volume = 0.5;
         
         const playPromise = music.play();
         
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log("✅ Music playing successfully!");
+            // Change button text to show it's playing
+            const playButton = document.querySelector('.romantic-btn');
+            if (playButton.textContent.includes('Play Our Song')) {
+              playButton.textContent = "🎵 Music Playing! 💕";
+              playButton.style.background = "linear-gradient(to right, #4ade80, #22c55e)";
+            }
           }).catch(error => {
             console.log("❌ Auto-play blocked:", error);
-            alert("🎵 Click the 'Play Our Song' button again to start music! Browsers require user interaction.");
+            console.log("User needs to click the play button");
           });
         }
       }
@@ -802,7 +808,7 @@
         updateAnniversaryTime();
         setInterval(updateAnniversaryTime, 1000);
         
-        music.volume = 0.7;
+        music.volume = 0.5;
         setTimeout(() => {
           startMusic();
         }, 1000);
